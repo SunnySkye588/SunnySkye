@@ -1,200 +1,46 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>智能链接分流器</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  
-  <!-- 配置Tailwind自定义样式 -->
+  <meta charset="UTF-8" />
+  <title>跳转中...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#3B82F6',
-            secondary: '#10B981',
-            accent: '#8B5CF6',
-            dark: '#1E293B',
-            light: '#F8FAFC'
-          },
-          fontFamily: {
-            inter: ['Inter', 'system-ui', 'sans-serif'],
-          },
-        },
-      }
-    }
-  </script>
-  
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .content-auto {
-        content-visibility: auto;
-      }
-      .text-shadow {
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      }
-      .transition-custom {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      .bg-gradient-custom {
-        background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
-      }
-    }
-  </style>
-</head>
-
-<body class="font-inter bg-gray-50 min-h-screen flex flex-col items-center justify-center p-4 text-dark">
-  <!-- 分流器容器 -->
-  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden transition-custom transform hover:shadow-2xl">
-    <!-- 头部渐变背景 -->
-    <div class="bg-gradient-custom p-6 text-white">
-      <h1 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-shadow mb-2">智能链接分流</h1>
-      <p class="text-white/80">正在为您选择最佳连接...</p>
-    </div>
-    
-    <!-- 加载动画区域 -->
-    <div class="p-8 flex flex-col items-center justify-center">
-      <div class="w-20 h-20 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-6"></div>
-      <p class="text-lg font-medium mb-2" id="status-text">准备重定向到目标链接</p>
-      <p class="text-gray-500 text-sm mb-6" id="loading-progress">0%</p>
-      
-      <!-- 链接信息显示 -->
-      <div class="w-full bg-gray-50 rounded-lg p-4 mb-6 hidden" id="link-info">
-        <h3 class="font-medium text-primary mb-2">目标链接</h3>
-        <p class="text-gray-700 text-sm break-all" id="target-link"></p>
-      </div>
-      
-      <!-- 手动操作按钮 -->
-      <div class="flex flex-col gap-3 w-full">
-        <button id="skip-btn" class="bg-primary hover:bg-primary/90 text-white py-3 px-6 rounded-lg font-medium transition-custom flex items-center justify-center gap-2 hidden">
-          <i class="fa fa-forward"></i>
-          <span>立即跳转</span>
-        </button>
-        <button id="change-btn" class="bg-gray-200 hover:bg-gray-300 text-dark py-3 px-6 rounded-lg font-medium transition-custom flex items-center justify-center gap-2 hidden">
-          <i class="fa fa-refresh"></i>
-          <span>更换链接</span>
-        </button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- 页脚信息 -->
-  <div class="mt-8 text-center text-gray-500 text-sm">
-    <p>链接分流系统 &copy; 2025</p>
-  </div>
-
-  <script>
-    // 定义要分流的链接列表（可替换为您的链接）
-    const links = [
+    // 所有 WhatsApp 链接
+    const links = [ 
       "https://wa.me/447565073441",
       "https://wa.me/447541099927",
-      "https://wa.me/447563733902",
-      "https://wa.me/447851577966",
-      "https://wa.me/447563734086",
-      "https://wa.me/447843751871",
-      "https://wa.me/447563734106",
-      "https://wa.me/447719414096",
-      "https://wa.me/447563733877",
-      "https://wa.me/447907463395",
-      "https://wa.me/447594526839",
-      "https://wa.me/447563735298"
+      "https://wa.me/447563733902",   
     ];
-    
-    const LOCAL_KEY = "linkAssignedIndex";
-    const statusText = document.getElementById('status-text');
-    const loadingProgress = document.getElementById('loading-progress');
-    const linkInfo = document.getElementById('link-info');
-    const targetLink = document.getElementById('target-link');
-    const skipBtn = document.getElementById('skip-btn');
-    const changeBtn = document.getElementById('change-btn');
-    
-    // 获取分配的链接索引
+
+    const LOCAL_KEY = "waAssignedIndex";
+
     function getAssignedIndex() {
       let saved = localStorage.getItem(LOCAL_KEY);
-      
       if (saved !== null) {
         return parseInt(saved, 10);
-}
-      
+      }
+
       const params = new URLSearchParams(window.location.search);
       const testIndex = parseInt(params.get("test"), 10);
-      
       if (!isNaN(testIndex) && testIndex >= 0 && testIndex < links.length) {
         localStorage.setItem(LOCAL_KEY, testIndex);
         return testIndex;
       }
-      
+
       const randomIndex = Math.floor(Math.random() * links.length);
       localStorage.setItem(LOCAL_KEY, randomIndex);
       return randomIndex;
     }
-    
-    // 显示目标链接信息
-    function displayLinkInfo(index) {
-      const target = links[index];
-      targetLink.textContent = target;
-      linkInfo.classList.remove('hidden');
-      skipBtn.classList.remove('hidden');
-      changeBtn.classList.remove('hidden');
-      
-      // 解析链接类型并显示图标
-      let iconClass = 'fa-link';
-      if (target.startsWith('https://wa.me/')) {
-        iconClass = 'fa-whatsapp';
-      } else if (target.startsWith('https://t.me/')) {
-        iconClass = 'fa-telegram';
-      } else if (target.startsWith('http://') || target.startsWith('https://')) {
-        iconClass = 'fa-globe';
-      }
-      
-      // 可以在这里添加更多链接类型的图标判断
-    }
-    
-    // 执行重定向
+
     function redirect() {
       const index = getAssignedIndex();
       const target = links[index];
-      
-      // 显示目标链接信息
-      displayLinkInfo(index);
-      
-      // 模拟加载过程
-      let progress = 0;
-      const progressInterval = setInterval(() => {
-        progress += Math.floor(Math.random() * 10) + 5;
-        if (progress > 100) progress = 100;
-        
-        loadingProgress.textContent = ${progress}%;
-        
-        if (progress >= 100) {
-          clearInterval(progressInterval);
-          statusText.textContent = "即将重定向...";
-          
-          // 200ms后重定向
-          setTimeout(() => {
-            window.location.href = target;
-          }, 200);
-        }
-      }, 150);
-      
-      // 跳过按钮功能
-      skipBtn.addEventListener('click', () => {
-        clearInterval(progressInterval);
-        window.location.href = target;
-      });
-      
-      // 更换链接按钮功能
-      changeBtn.addEventListener('click', () => {
-        // 清除本地存储，下次获取新的随机链接
-        localStorage.removeItem(LOCAL_KEY);
-        location.reload();
-      });
+      window.location.href = target;
     }
-    
-    // 页面加载时执行重定向
+
     window.onload = redirect;
   </script>
+</head>
+<body>
 </body>
 </html>
