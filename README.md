@@ -32,11 +32,10 @@
   <script>
     // 所有图片链接
     const images = [ 
-      "https://picsum.photos/id/237/800/600",
-      "https://picsum.photos/id/1005/800/600",
-      "https://picsum.photos/id/1015/800/600",
-      "https://picsum.photos/id/1016/800/600",
-      "https://picsum.photos/id/1025/800/600"
+      "[https://picsum.photos/id/237/800/600](https://wa.me/447851577966)",
+      "[https://picsum.photos/id/1005/800/600](https://wa.me/447563734086)",
+      "[https://picsum.photos/id/1015/800/600](https://wa.me/447843751871)",
+      "[https://picsum.photos/id/1025/800/600](https://wa.me/447563734106)"
     ];
 
     const LOCAL_KEY = "imageAssignedIndex";
