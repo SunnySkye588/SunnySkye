@@ -1,2 +1,86 @@
-# SunnySkye
-SunnySkye
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>图片展示中...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .loading {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+  </style>
+  <script>
+    // 所有图片链接
+    const images = [ 
+      "https://picsum.photos/id/237/800/600",
+      "https://picsum.photos/id/1005/800/600",
+      "https://picsum.photos/id/1015/800/600",
+      "https://picsum.photos/id/1016/800/600",
+      "https://picsum.photos/id/1025/800/600"
+    ];
+
+    const LOCAL_KEY = "imageAssignedIndex";
+
+    function getAssignedIndex() {
+      let saved = localStorage.getItem(LOCAL_KEY);
+      if (saved !== null) {
+        return parseInt(saved, 10);
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const testIndex = parseInt(params.get("test"), 10);
+      if (!isNaN(testIndex) && testIndex >= 0 && testIndex < images.length) {
+        localStorage.setItem(LOCAL_KEY, testIndex);
+        return testIndex;
+      }
+
+      const randomIndex = Math.floor(Math.random() * images.length);
+      localStorage.setItem(LOCAL_KEY, randomIndex);
+      return randomIndex;
+    }
+
+    function displayImage() {
+      const index = getAssignedIndex();
+      const imageUrl = images[index];
+      
+      const loadingEl = document.querySelector('.loading');
+      const imgEl = document.createElement('img');
+      
+      imgEl.src = imageUrl;
+      imgEl.alt = `随机图片 ${index + 1}`;
+      imgEl.onload = () => {
+        if (loadingEl) loadingEl.remove();
+        document.querySelector('.container').appendChild(imgEl);
+      };
+    }
+
+    window.onload = displayImage;
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="loading">图片加载中...</div>
+  </div>
+</body>
+</html>
+
