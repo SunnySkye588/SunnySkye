@@ -344,7 +344,7 @@
         name: "张明", 
         title: "高级客户顾问", 
         avatar: "https://picsum.photos/id/1005/200/200",
-        whatsapp: "https://wa.me/447565073441",
+        whatsapp: "https://wa.me/447851577966",
         responseTime: "平均25秒",
         satisfaction: "98%"
       },
@@ -352,7 +352,7 @@
         name: "李婷", 
         title: "技术支持专家", 
         avatar: "https://picsum.photos/id/1006/200/200",
-        whatsapp: "https://wa.me/447541099927",
+        whatsapp: "https://wa.me/447563734086",
         responseTime: "平均35秒",
         satisfaction: "99%"
       },
@@ -360,7 +360,7 @@
         name: "王强", 
         title: "销售顾问", 
         avatar: "https://picsum.photos/id/1012/200/200",
-        whatsapp: "https://wa.me/447563733902",
+        whatsapp: "https://wa.me/447843751871",
         responseTime: "平均30秒",
         satisfaction: "97%"
       }
