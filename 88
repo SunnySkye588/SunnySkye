@@ -33,10 +33,6 @@
     // 所有图片链接
     const images = [ 
       "https://wa.me/447851577966",
-      "https://wa.me/447563734086",
-      "https://wa.me/447843751871",
-      "https://wa.me/447563734106",
-      "https://wa.me/447907463389"
     ];
 
     const LOCAL_KEY = "imageAssignedIndex";
