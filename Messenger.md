@@ -9,7 +9,6 @@
         const links = [
             "https://m.me/61561233249169",
             "https://m.me/61561190470123", 
-            "https://m.me/61561189966043",
         ];
         
         const LOCAL_KEY = "messengerAssignedIndex";
